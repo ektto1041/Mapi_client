@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Main from './page/Main';
+
 import reportWebVitals from './reportWebVitals';
+import Login from "./page/Login";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Main />
+    <Login />
   </React.StrictMode>
 );
 
