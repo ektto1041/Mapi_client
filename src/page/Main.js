@@ -1,12 +1,8 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import Box from '@mui/material/Box';
 
 const {kakao} = window;
-
-const Container = styled.div`
-  width: 1600px;
-  height: 900px;
-`;
 
 const Map = () => {
   useEffect(() => {
@@ -22,9 +18,14 @@ const Map = () => {
 
   return (
     <>
-      <Container id='map'>
+      <Box id='map' sx={{
+        width: 390,
+        height: 844,
+        backgroundColor: 'red'
+      }}>
 
-      </Container>
+
+      </Box>
     </>
   )
 }
