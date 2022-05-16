@@ -6,7 +6,7 @@ import logoImage from "../resource/logo.png";
 import LoginFormItem from "../component/common/LoginFormItem";
 import MainButton from "../component/common/MainButton";
 import {useCallback, useState} from "react";
-import {Typography} from "@mui/material";
+import {Link, Typography} from "@mui/material";
 
 /**
  *  로그인/회원가입 페이지
@@ -63,14 +63,14 @@ const Login = () => {
 
                 <Box sx={{
                     width: `100%`,
-                    height: `420px`,
+                    height: `auto`,
                     backgroundColor: `white`,
                     display: `flex`,
                     flexDirection: `column`,
                     position: `relative`,
-                    borderRadius: `25px`,
+                    boxShadow: `0px 7px 10px 0px #B5B5B5`,
                 }}>
-                    <Box sx={{ height: `20%` }}></Box>
+                    <Box sx={{ height: `20px` }}></Box>
 
                     <LoginFormItem
                         value={email}
@@ -89,14 +89,29 @@ const Login = () => {
                         비밀번호
                     </LoginFormItem>
 
-                    <Typography sx={{
-                        textDecoration: `underline`,
-                        mx: `auto`,
-                        color: `blue`,
-                        cursor: `pointer`,
-                    }}>
-                        아이디가 없으신가요?
-                    </Typography>
+                    <Box
+                        sx={{
+                            width: `80%`,
+                            mx: `auto`,
+                            display: `flex`,
+                            flexDirection: 'row',
+                            mb: `20px`,
+                        }}
+                    >
+                        <Link href={"/"}
+                              sx={{ width: `50%`, textAlign: `start` }}
+                        >
+                            회원가입
+                        </Link>
+
+                        <Link href={"/"}
+                              sx={{ width: `50%`, textAlign: `end` }}
+                        >
+                            로그인
+                        </Link>
+                    </Box>
+
+
 
                     <MainButton
                         onClick={onClickLogin}
