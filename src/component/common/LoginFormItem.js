@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
+import {TextField} from "@mui/material";
 
 /**
  *  로그인 박스에서 사용되는 라벨 : 인풋 형태의 컴포넌트
@@ -18,13 +19,13 @@ const LoginFormItem = ({
             width: `80%`,
             height: `auto`,
             mx: `auto`,
-            flexDirection: `row`,
+            flexDirection: `column`,
             mb: `${marginBottom}`,
         }}>
 
             <Box
                 sx={{
-                    width: `40%`,
+                    width: `100%`,
                     height: `25px`,
                     lineHeight: `25px`
                 }}
@@ -32,13 +33,13 @@ const LoginFormItem = ({
                 {children}
             </Box>
 
-            <Input
+            <TextField
                 onChange={onChange}
-                sx={{ width: `60%`, height: `25px` }}
+                sx={{ width: `100%`, height: `25px` }}
                 size={`small`}
                 type={type == null ? `text` : type}
                 value={value}
-            ></Input>
+            ></TextField>
 
         </Box>
     )
