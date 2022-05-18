@@ -1,11 +1,86 @@
-import Box from '@mui/material/Box'
+import {useEffect, useState} from "react";
+import {styled} from "@mui/system";
+import Box from "@mui/material/Box";
+import {CircularProgress} from "@mui/material";
 
+/**
+ *  지도가 보여지는 화면
+ */
+
+const { kakao } = window;
+
+const Background = styled(Box)(p => ({
+    width: `100%`,
+    height: `100%`,
+}));
 
 const Map = () => {
-    return (
-        <>
+    const [isLoading, setIsLoading] = useState(true);
 
-        </>
+    useEffect(() => {
+        setIsLoading(true);
+
+        console.log(isLoading);
+
+        const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+
+        let lat, lng;
+
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    lat = pos.coords.latitude;
+                    lng = pos.coords.longitude;
+
+                    const options = { //지도를 생성할 때 필요한 기본 옵션
+                        center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.
+                        level: 3 //지도의 레벨(확대, 축소 정도)
+                    };
+
+                    const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+                    setIsLoading(false);
+                },
+                e => {
+                    console.log(e);
+                }, {
+                    enableHighAccuracy: false,
+                    maximumAge: 0,
+                    timeout: Infinity
+                });
+        } else {
+            const options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
+
+            const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+            setIsLoading(false);
+        }
+    }, []);
+
+
+    return (
+        <Background
+            id='map'
+        >
+            <Box
+                visibility={isLoading ? `visible` : `hidden`}
+                sx={{ width: `100%`, height: `100%`, display: `flex`, justifyContent: `center`, alignItems: `center` }}
+            >
+                <CircularProgress sx={{ width: `100%`, height: `100%` }} />
+            </Box>
+
+            <Box
+                visibility={isLoading ? `hidden` : `visible`}
+                id={`map`}
+                sx={{ width: `100%`, height: `100%` }}
+            >
+                <CircularProgress sx={{ width: `100%`, height: `100%` }} />
+            </Box>
+
+        </Background>
     )
 };
 
