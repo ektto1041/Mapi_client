@@ -80,7 +80,7 @@ const MapItem = () => {
                 alignItems: `center`,
                 mr: `10px`,
             }}>
-                <FavoriteBorderIcon color='primary' sx={{ width: `100%`, height: `100%` }} />
+                <FavoriteBorderIcon color='primary' sx={{ width: `100%`, height: `100%`, maxHeight: `30px` }} />
             </Box>
         </Container>
     )

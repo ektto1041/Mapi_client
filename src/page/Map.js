@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {styled} from "@mui/system";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
+import Spin from '../component/common/Spin';
 
 /**
  *  지도가 보여지는 화면
@@ -65,21 +66,14 @@ const Map = () => {
         <Background
             id='map'
         >
-            <Box
-                visibility={isLoading ? `visible` : `hidden`}
-                sx={{ width: `100%`, height: `100%`, display: `flex`, justifyContent: `center`, alignItems: `center` }}
-            >
-                <CircularProgress sx={{ width: `100%`, height: `100%` }} />
-            </Box>
-
-            <Box
-                visibility={isLoading ? `hidden` : `visible`}
-                id={`map`}
-                sx={{ width: `100%`, height: `100%` }}
-            >
-                <CircularProgress sx={{ width: `100%`, height: `100%` }} />
-            </Box>
-
+            {isLoading ? (<Spin />) : (
+                <Box
+                    id={`map`}
+                    sx={{ width: `100%`, height: `100%` }}
+                >
+                    <CircularProgress sx={{ width: `100%`, height: `100%` }} />
+                </Box>
+            )}
         </Background>
     )
 };
