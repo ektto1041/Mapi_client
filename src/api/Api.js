@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const addr = (true) ? 'http://52.78.220.84:8080' : 'http://localhost:8080/api'
+const addr = 'http://localhost:8080/';
 
 const serverApis = {
     login: (userLoginDto) => new Promise((resolve, reject) => {
