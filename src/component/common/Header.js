@@ -2,24 +2,23 @@
  *  화면 상단의 헤더
  */
 import Box from "@mui/material/Box";
-import Ic_user from "../../resource/ic_user.svg";
-import Button from "@mui/material/Button";
 import {Icon, IconButton, SvgIcon, Typography} from "@mui/material";
 import MapIcon from '@mui/icons-material/Map';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import dim from "../../resource/Dimentions";
 import { useNavigate } from "react-router-dom";
 import {useCallback} from "react";
+import path from "../../resource/Path";
 
 const Header = () => {
     const navigate = useNavigate();
 
     const onClickMapListBtn = useCallback((e) => {
-        navigate("/mapList");
+        navigate(path.full.mapList);
     }, []);
 
     const onClickUserBtn = useCallback((e) => {
-        navigate("/login");
+        navigate(path.full.login);
     }, []);
 
     return (
@@ -27,7 +26,7 @@ const Header = () => {
             sx={{
                 width: `100%`,
                 backgroundColor: `white`,
-                height: dim.HEADER_HEIGHT,
+                height: dim.headerHeight,
                 position: `absolute`,
                 left: `0`,
                 top: `0`,
@@ -45,7 +44,7 @@ const Header = () => {
                 }}
             >
                 <Typography
-                    lineHeight={dim.HEADER_HEIGHT}
+                    lineHeight={dim.headerHeight}
                     marginLeft={`20px`}
                     fontSize={`25px`}
                     fontWeight={`bold`}
@@ -67,8 +66,8 @@ const Header = () => {
                 <IconButton
                     onClick={onClickMapListBtn}
                     sx={{
-                        width: dim.HEADER_HEIGHT,
-                        height: dim.HEADER_HEIGHT,
+                        width: dim.headerHeight,
+                        height: dim.headerHeight,
                     }}
                 >
                     <MapIcon />
@@ -77,8 +76,8 @@ const Header = () => {
                 <IconButton
                     onClick={onClickUserBtn}
                     sx={{
-                        width: dim.HEADER_HEIGHT,
-                        height: dim.HEADER_HEIGHT,
+                        width: dim.headerHeight,
+                        height: dim.headerHeight,
                     }}
                 >
                     <PersonOutlineIcon />

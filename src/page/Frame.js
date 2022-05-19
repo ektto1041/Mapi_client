@@ -4,6 +4,7 @@ import Header from "../component/common/Header";
 import {Routes, Route} from 'react-router-dom';
 import Map from '../page/Map';
 import MapList from '../page/MapList';
+import path from "../resource/Path";
 
 /**
  *  Header 를 포함하는 큰 틀
@@ -25,8 +26,8 @@ const Frame = () => {
 
             <Body>
                 <Routes>
-                    <Route path='/*' element={<Map />} />
-                    <Route path='/mapList/*' element={<MapList />} />
+                    <Route path={path.routing.map} element={<Map />} />
+                    <Route path={path.routing.mapList} element={<MapList />} />
                 </Routes>
             </Body>
         </Background>

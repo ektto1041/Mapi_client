@@ -64,7 +64,7 @@ const MapList = () => {
 
     return (
         <Background>
-            <Box sx={{ height: dim.HEADER_HEIGHT }} />
+            <Box sx={{ height: dim.headerHeight }} />
 
             <Content>
                 {isLoading ? (
