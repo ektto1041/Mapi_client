@@ -1,12 +1,12 @@
 import {styled} from "@mui/system";
 import Box from "@mui/material/Box";
 import background from "../resource/background.png";
-import {serverApis} from "../api/Api";
 import logoImage from "../resource/logo.png";
-import LoginFormItem from "../component/common/LoginFormItem";
-import MainButton from "../component/common/MainButton";
 import {useCallback, useState} from "react";
-import {Link, Typography} from "@mui/material";
+import {Route, Routes} from "react-router-dom";
+import LoginBox from "../component/common/LoginBox";
+import path from '../resource/Path'
+import SignUpBox from "../component/common/SignUpBox";
 
 /**
  *  로그인/회원가입 페이지
@@ -23,6 +23,7 @@ const Background = styled(Box)(p => ({
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
 
     const onChangeEmail = useCallback((e) => {
         setEmail(e.target.value);
@@ -32,17 +33,28 @@ const Login = () => {
         setPassword(e.target.value);
     }, []);
 
+    const onChangeName = useCallback((e) => {
+        setName(e.target.value);
+    }, []);
+
     const onClickLogin = useCallback((e) => {
         const userLoginDto = {
             email,
             password,
-        }
+        };
 
-        serverApis.login(userLoginDto)
-            .then(r => {
-                console.log(r.data);
-            })
+        // TODO: API
     }, [email, password]);
+
+    const onClickSignUp = useCallback(() => {
+        const userSignUpDto = {
+            email,
+            password,
+            name
+        };
+
+        // TODO: API
+    })
 
     return (
         <Background>
@@ -70,54 +82,26 @@ const Login = () => {
                     position: `relative`,
                     boxShadow: `0px 7px 10px 0px #B5B5B5`,
                 }}>
-                    <Box sx={{ height: `20px` }}></Box>
+                    <Routes>
+                        <Route path={path.routing.login} element={<LoginBox
+                            email={email}
+                            password={password}
 
-                    <LoginFormItem
-                        value={email}
-                        onChange={onChangeEmail}
-                        marginBottom={`25px`}
-                    >
-                        이메일
-                    </LoginFormItem>
+                            onChangeEmail={onChangeEmail}
+                            onChangePassword={onChangePassword}
+                            onClickLogin={onClickLogin}
+                        />} />
+                        <Route path={path.routing.signUp} element={<SignUpBox
+                            email={email}
+                            password={password}
+                            name={name}
 
-                    <LoginFormItem
-                        value={password}
-                        onChange={onChangePassword}
-                        type={`password`}
-                        marginBottom={`25px`}
-                    >
-                        비밀번호
-                    </LoginFormItem>
-
-                    <Box
-                        sx={{
-                            width: `80%`,
-                            mx: `auto`,
-                            display: `flex`,
-                            flexDirection: 'row',
-                            mb: `20px`,
-                        }}
-                    >
-                        <Link href={"/"}
-                              sx={{ width: `50%`, textAlign: `start` }}
-                        >
-                            회원가입
-                        </Link>
-
-                        <Link href={"/"}
-                              sx={{ width: `50%`, textAlign: `end` }}
-                        >
-                            로그인
-                        </Link>
-                    </Box>
-
-
-
-                    <MainButton
-                        onClick={onClickLogin}
-                    >
-                        로그인
-                    </MainButton>
+                            onChangeEmail={onChangeEmail}
+                            onChangePassword={onChangePassword}
+                            onChangeName={onChangeName}
+                            onClickSignUp={onClickSignUp}
+                        />} />
+                    </Routes>
                 </Box>
             </Box>
         </Background>

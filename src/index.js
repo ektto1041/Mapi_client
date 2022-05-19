@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Login from "./page/Login";
-import Map from "./page/Map";
 import {createTheme} from "@mui/material/styles";
 import {ThemeProvider} from "@mui/system";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Frame from "./page/Frame";
+import path from "./resource/Path";
 
 const theme = createTheme({
     palette: {
@@ -22,12 +22,11 @@ root.render(
   <ThemeProvider theme={theme}>
       <BrowserRouter>
           <Routes>
-              <Route path='/login/*' element={(<Login />)} />
-              <Route path='/*' element={(<Frame />)} />
+              <Route path={path.routing.auth} element={(<Login />)} />
+              <Route path={path.routing.frame} element={(<Frame />)} />
           </Routes>
       </BrowserRouter>
   </ThemeProvider>
-
 );
 
 // If you want to start measuring performance in your app, pass a function

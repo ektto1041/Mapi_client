@@ -9,6 +9,7 @@ import {Accessibility} from "@mui/icons-material";
 import {Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useCallback} from "react";
+import path from "../../resource/Path";
 
 const Container = styled(Box)(p => ({
     width: `calc(100% - 10px)`,
@@ -25,7 +26,7 @@ const MapItem = () => {
     const navigate = useNavigate();
 
     const onClickMapItem = useCallback(() => {
-        navigate("/");
+        navigate(path.full.map);
     }, [])
 
     return (
