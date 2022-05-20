@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {styled} from "@mui/system";
+import {letterSpacing, styled} from "@mui/system";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import Spin from '../component/common/Spin';
@@ -16,7 +16,8 @@ const Background = styled(Box)(p => ({
 }));
 
 const Map = () => {
-    const [isLoading, setIsLoading] = useState(true);
+    let [isLoading, setIsLoading] = useState(true);
+    let [currentMap, setCurrentMap] = useState(null);
 
     useEffect(() => {
         setIsLoading(true);
@@ -39,7 +40,7 @@ const Map = () => {
                     };
 
                     const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
+                    setCurrentMap(map);
                     setIsLoading(false);
                 },
                 e => {
@@ -56,12 +57,16 @@ const Map = () => {
             };
 
             const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
+            setCurrentMap(map);
             setIsLoading(false);
         }
+        
+        kakao.maps.event.addListener(currentMap, 'click', function(mouseEvent){
+            console.log(1);
+        });
+        
     }, []);
-
-
+    
     return (
         <Background
             id='map'
