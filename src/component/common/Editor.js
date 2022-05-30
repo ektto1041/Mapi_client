@@ -15,6 +15,7 @@ const CustomEditor = ({
                 formats={['header', 'font', 'size', 'bold', 'italic', 'underline']}
                 value={value}
                 onChange={onValueChange}
+                style={{height: `100%`}}
             />
         </>
     )

@@ -5,6 +5,8 @@ import {CircularProgress} from "@mui/material";
 import Spin from '../component/common/Spin';
 import CategoryBox from "../component/common/CategoryBox";
 import {dev, dummy} from "../resource/dev";
+import {useNavigate} from "react-router-dom";
+import path from "../resource/Path";
 
 /**
  *  지도가 보여지는 화면
@@ -19,6 +21,8 @@ const Background = styled(Box)(p => ({
 }));
 
 const Map = () => {
+    const navigate = useNavigate();
+
     const [isLoading, setIsLoading] = useState(true);
     const [map, setMap] = useState(null);
     const [filter, setFilter] = useState('-');
@@ -90,11 +94,7 @@ const Map = () => {
     useEffect(() => {
         if(!map) return;
 
-        kakao.maps.event.addListener(map, 'click', (e) => {
-            const latLng = e.latLng;
-
-            console.log(latLng);
-        });
+        kakao.maps.event.addListener(map, 'click', onMapClick);
     }, [map]);
 
     const getPins = (category) => {
@@ -119,7 +119,13 @@ const Map = () => {
         } else {
 
         }
-    }
+    };
+
+    const onMapClick = (e) => {
+        const latLng = e.latLng;
+
+        navigate(path.full.addRecord(latLng.Ma, latLng.La));
+    };
 
     const onFilterItemClick = useCallback((item) => {
         let newFilter;

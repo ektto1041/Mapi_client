@@ -17,7 +17,7 @@ const path = {
         map: `/map`,
         mapList: `/mapList`,
         post: `/post`,
-        addRecord: `/addRecord`,
+        addRecord: (lat, lng) => `/addRecord?lat=${lat}&lng=${lng}`,
     }
 }
 
