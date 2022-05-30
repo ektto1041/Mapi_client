@@ -29,6 +29,11 @@ const serverApis = {
             .then(r => resolve(r))
             .catch(e => reject(e))
     }),
+    addRecord: (recordDto) => new Promise((resolve, reject) => {
+        axios.post(`${addr}/record`, recordDto)
+            .then(r => resolve(r))
+            .catch(e => reject(e))
+    }),
 }
 
 export {
