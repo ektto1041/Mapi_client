@@ -7,20 +7,13 @@ import {Route, Routes} from "react-router-dom";
 import LoginBox from "../component/common/LoginBox";
 import path from '../resource/Path'
 import SignUpBox from "../component/common/SignUpBox";
+import dev from "../resource/dev";
+import {Cookies} from "react-cookie";
 
 /**
  *  로그인/회원가입 페이지
  */
-
-const Background = styled(Box)(p => ({
-    height: `100vh`,
-    backgroundImage: `url(${background})`,
-    display: `flex`,
-    flexDirection: `row`,
-    alignItems: `center`
-}));
-
-const Login = () => {
+const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -36,25 +29,6 @@ const Login = () => {
     const onChangeName = useCallback((e) => {
         setName(e.target.value);
     }, []);
-
-    const onClickLogin = useCallback((e) => {
-        const userLoginDto = {
-            email,
-            password,
-        };
-
-        // TODO: API
-    }, [email, password]);
-
-    const onClickSignUp = useCallback(() => {
-        const userSignUpDto = {
-            email,
-            password,
-            name
-        };
-
-        // TODO: API
-    })
 
     return (
         <Background>
@@ -89,7 +63,6 @@ const Login = () => {
 
                             onChangeEmail={onChangeEmail}
                             onChangePassword={onChangePassword}
-                            onClickLogin={onClickLogin}
                         />} />
                         <Route path={path.routing.signUp} element={<SignUpBox
                             email={email}
@@ -99,13 +72,20 @@ const Login = () => {
                             onChangeEmail={onChangeEmail}
                             onChangePassword={onChangePassword}
                             onChangeName={onChangeName}
-                            onClickSignUp={onClickSignUp}
                         />} />
                     </Routes>
                 </Box>
             </Box>
         </Background>
     );
-}
+};
 
-export default Login;
+const Background = styled(Box)(p => ({
+    height: `100vh`,
+    backgroundImage: `url(${background})`,
+    display: `flex`,
+    flexDirection: `row`,
+    alignItems: `center`
+}));
+
+export default Auth;
