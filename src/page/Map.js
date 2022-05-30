@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {styled} from "@mui/system";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import Spin from '../component/common/Spin';
+import CategoryBox from "../component/common/CategoryBox";
+import {dev, dummy} from "../resource/dev";
 
 /**
  *  지도가 보여지는 화면
@@ -13,10 +15,14 @@ const { kakao } = window;
 const Background = styled(Box)(p => ({
     width: `100%`,
     height: `100%`,
+    position: `relative`,
 }));
 
 const Map = () => {
     const [isLoading, setIsLoading] = useState(true);
+    const [map, setMap] = useState(null);
+    const [filter, setFilter] = useState('-');
+    const [markers, setMarkers] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -33,12 +39,17 @@ const Map = () => {
                     lat = pos.coords.latitude;
                     lng = pos.coords.longitude;
 
+                    console.log(lat)
+                    console.log(lng)
+
                     const options = { //지도를 생성할 때 필요한 기본 옵션
                         center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.
                         level: 3 //지도의 레벨(확대, 축소 정도)
                     };
 
-                    const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+                    setMap(new kakao.maps.Map(container, options)); //지도 생성 및 객체 리턴
+
+                    getPins('-');
 
                     setIsLoading(false);
                 },
@@ -55,24 +66,92 @@ const Map = () => {
                 level: 3 //지도의 레벨(확대, 축소 정도)
             };
 
-            const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+            setMap(new kakao.maps.Map(container, options)); //지도 생성 및 객체 리턴
+
+            getPins('-');
 
             setIsLoading(false);
         }
     }, []);
 
+    useEffect(() => {
+        console.log(markers);
+
+        if(!map) return;
+        console.log(map)
+
+        markers.forEach(m => {
+            console.log(m)
+            m.setMap(map);
+        })
+    }, [map, markers]);
+
+    // 지도에 클릭 이벤트 지정
+    useEffect(() => {
+        if(!map) return;
+
+        kakao.maps.event.addListener(map, 'click', (e) => {
+            const latLng = e.latLng;
+
+            console.log(latLng);
+        });
+    }, [map]);
+
+    const getPins = (category) => {
+        if(dev) {
+            const pins = category === '-' ? dummy.pins : dummy.pins.filter(item => item.category === category);
+
+            let markerList = [];
+
+            pins.forEach(pin => {
+                const pos = new kakao.maps.LatLng(pin.latitude, pin.longitude);
+
+                console.log(pos);
+
+                const marker = new kakao.maps.Marker({
+                    position: pos,
+                });
+
+                markerList.push(marker);
+            });
+
+            setMarkers(markerList);
+        } else {
+
+        }
+    }
+
+    const onFilterItemClick = useCallback((item) => {
+        let newFilter;
+
+        if(filter === item) newFilter = '-';
+        else newFilter = item;
+
+        setFilter(newFilter);
+
+        // 기존 마커 삭제
+        markers.forEach(m => {
+            m.setMap(null);
+        });
+
+        getPins(newFilter);
+    }, [markers, filter]);
 
     return (
         <Background
             id='map'
         >
             {isLoading ? (<Spin />) : (
-                <Box
-                    id={`map`}
-                    sx={{ width: `100%`, height: `100%` }}
-                >
-                    <CircularProgress sx={{ width: `100%`, height: `100%` }} />
-                </Box>
+                <>
+                    <Box
+                        id={`map`}
+                        sx={{ width: `100%`, height: `100%` }}
+                    >
+                        <CircularProgress sx={{ width: `100%`, height: `100%` }} />
+                    </Box>
+
+                    <CategoryBox value={filter} onItemClick={onFilterItemClick} />
+                </>
             )}
         </Background>
     )

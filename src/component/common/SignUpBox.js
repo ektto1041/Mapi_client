@@ -5,6 +5,10 @@ import MainButton from "./MainButton";
 import path from "../../resource/Path";
 import str from "../../resource/String";
 import dim from '../../resource/Dimentions';
+import {useCallback} from "react";
+import {dev} from "../../resource/dev";
+import {useNavigate} from "react-router-dom";
+import {serverApis} from "../../api/Api";
 
 /**
  *  로그인 정보를 입력하는 상자
@@ -18,8 +22,29 @@ const LoginBox = ({
     onChangeEmail,
     onChangePassword,
     onChangeName,
-    onClickSignUp,
 }) => {
+    const navigate = useNavigate();
+
+    const onClickSignUp = useCallback(() => {
+        const userSignUpDto = {
+            email,
+            password,
+            name
+        };
+
+        if(dev) {
+            // Dev: 바로 로그인 페이지로 이동
+            navigate(path.full.login);
+        } else {
+            serverApis.signUp(userSignUpDto)
+                .then(r => {
+                    // 회원가입 성공 시 로그인 페이지로 이동
+                    navigate(path.full.login);
+                })
+                .catch(e => console.log(e));
+        }
+    })
+
     return (
         <Box sx={{
             width: `100%`,
@@ -66,8 +91,6 @@ const LoginBox = ({
             >
                 {str.login}
             </Link>
-
-
 
             <MainButton
                 onClick={onClickSignUp}

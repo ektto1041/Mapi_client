@@ -6,14 +6,18 @@ const path = {
         frame: `/*`,
         map: `/map/*`,
         mapList: `/mapList/*`,
+        post: `/post/*`,
+        addRecord: `/addRecord`,
     },
     full: {
-        auth: '/auth/*',
+        auth: '/auth',
         login: '/auth/login',
         signUp: '/auth/signup',
-        frame: `/*`,
-        map: `/map/*`,
-        mapList: `/mapList/*`,
+        frame: `/`,
+        map: `/map`,
+        mapList: `/mapList`,
+        post: `/post`,
+        addRecord: `/addRecord`,
     }
 }
 
