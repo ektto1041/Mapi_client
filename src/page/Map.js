@@ -78,6 +78,8 @@ const Map = () => {
         }
     }, []);
 
+    // Markers 가 갱신된 이후에 호출
+    // Marker 들을 화면에 뿌려주고 클릭 이벤트 등록
     useEffect(() => {
         console.log(markers);
 
@@ -86,6 +88,12 @@ const Map = () => {
 
         markers.forEach(m => {
             console.log(m)
+
+            // 클릭 이벤트
+            kakao.maps.event.addListener(m, 'click', (e) => {
+                navigate(path.full.post(m.Gb));
+            });
+
             m.setMap(map);
         })
     }, [map, markers]);
@@ -99,7 +107,7 @@ const Map = () => {
 
     const getPins = (category) => {
         if(dev) {
-            const pins = category === '-' ? dummy.pins : dummy.pins.filter(item => item.category === category);
+            const pins = category === '-' ? dummy.records : dummy.records.filter(item => item.category === category);
 
             let markerList = [];
 
@@ -110,6 +118,8 @@ const Map = () => {
 
                 const marker = new kakao.maps.Marker({
                     position: pos,
+                    clickable: true,
+                    title: pin.recordId,
                 });
 
                 markerList.push(marker);
@@ -119,6 +129,12 @@ const Map = () => {
         } else {
 
         }
+    };
+
+    const onMapClick = (e) => {
+        const latLng = e.latLng;
+
+        navigate(path.full.addRecord(latLng.Ma, latLng.La));
     };
 
     const onMapClick = (e) => {

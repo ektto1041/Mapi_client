@@ -48,7 +48,7 @@ const AddRecord = () => {
         };
 
         if(dev) {
-            dummy.pins.push({recordId: 4, latitude: recordDto.latitude, longitude: recordDto.longitude, category: category});
+            dummy.records.push({recordId: 4, latitude: recordDto.latitude, longitude: recordDto.longitude, category: category});
 
             navigate(path.full.map);
         } else {
@@ -104,7 +104,7 @@ const EditorBox = styled(Box)(p => ({
 
 const ItemBox = styled(Box)(p => ({
     width: `90%`,
-    margin: `50px auto`,
+    margin: `100px auto`,
     display: `flex`,
     justifyContent: `space-between`,
 }));

@@ -6,7 +6,7 @@ const path = {
         frame: `/*`,
         map: `/map/*`,
         mapList: `/mapList/*`,
-        post: `/post/*`,
+        post: `/post/:postId`,
         addRecord: `/addRecord`,
     },
     full: {
@@ -16,7 +16,7 @@ const path = {
         frame: `/`,
         map: `/map`,
         mapList: `/mapList`,
-        post: `/post`,
+        post: (postId) => `/post/${postId}`,
         addRecord: (lat, lng) => `/addRecord?lat=${lat}&lng=${lng}`,
     }
 }

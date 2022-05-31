@@ -34,6 +34,11 @@ const serverApis = {
             .then(r => resolve(r))
             .catch(e => reject(e))
     }),
+    getRecord: (recordId) => new Promise((resolve, reject) => {
+        axios.get(`${addr}/record/${recordId}`)
+            .then(r => resolve(r))
+            .catch(e => reject(e))
+    }),
 }
 
 export {
