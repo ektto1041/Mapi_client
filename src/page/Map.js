@@ -137,12 +137,6 @@ const Map = () => {
         navigate(path.full.addRecord(latLng.Ma, latLng.La));
     };
 
-    const onMapClick = (e) => {
-        const latLng = e.latLng;
-
-        navigate(path.full.addRecord(latLng.Ma, latLng.La));
-    };
-
     const onFilterItemClick = useCallback((item) => {
         let newFilter;
 

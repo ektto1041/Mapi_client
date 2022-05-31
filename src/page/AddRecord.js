@@ -48,7 +48,7 @@ const AddRecord = () => {
         };
 
         if(dev) {
-            dummy.records.push({recordId: 4, latitude: recordDto.latitude, longitude: recordDto.longitude, category: category});
+            dummy.records.push({recordId: 4, latitude: recordDto.latitude, longitude: recordDto.longitude, category: category, title: title, content: content});
 
             navigate(path.full.map);
         } else {
