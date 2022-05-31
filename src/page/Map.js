@@ -5,6 +5,8 @@ import {CircularProgress} from "@mui/material";
 import Spin from '../component/common/Spin';
 import CategoryBox from "../component/common/CategoryBox";
 import {dev, dummy} from "../resource/dev";
+import {useNavigate} from "react-router-dom";
+import path from "../resource/Path";
 
 /**
  *  지도가 보여지는 화면
@@ -19,6 +21,8 @@ const Background = styled(Box)(p => ({
 }));
 
 const Map = () => {
+    const navigate = useNavigate();
+
     const [isLoading, setIsLoading] = useState(true);
     const [map, setMap] = useState(null);
     const [filter, setFilter] = useState('-');
@@ -74,6 +78,8 @@ const Map = () => {
         }
     }, []);
 
+    // Markers 가 갱신된 이후에 호출
+    // Marker 들을 화면에 뿌려주고 클릭 이벤트 등록
     useEffect(() => {
         console.log(markers);
 
@@ -82,6 +88,12 @@ const Map = () => {
 
         markers.forEach(m => {
             console.log(m)
+
+            // 클릭 이벤트
+            kakao.maps.event.addListener(m, 'click', (e) => {
+                navigate(path.full.post(m.Gb));
+            });
+
             m.setMap(map);
         })
     }, [map, markers]);
@@ -90,16 +102,12 @@ const Map = () => {
     useEffect(() => {
         if(!map) return;
 
-        kakao.maps.event.addListener(map, 'click', (e) => {
-            const latLng = e.latLng;
-
-            console.log(latLng);
-        });
+        kakao.maps.event.addListener(map, 'click', onMapClick);
     }, [map]);
 
     const getPins = (category) => {
         if(dev) {
-            const pins = category === '-' ? dummy.pins : dummy.pins.filter(item => item.category === category);
+            const pins = category === '-' ? dummy.records : dummy.records.filter(item => item.category === category);
 
             let markerList = [];
 
@@ -110,6 +118,8 @@ const Map = () => {
 
                 const marker = new kakao.maps.Marker({
                     position: pos,
+                    clickable: true,
+                    title: pin.recordId,
                 });
 
                 markerList.push(marker);
@@ -120,6 +130,12 @@ const Map = () => {
 
         }
     }
+
+    const onMapClick = (e) => {
+        const latLng = e.latLng;
+
+        navigate(path.full.addRecord(latLng.Ma, latLng.La));
+    };
 
     const onFilterItemClick = useCallback((item) => {
         let newFilter;

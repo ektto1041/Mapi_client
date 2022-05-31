@@ -12,6 +12,10 @@ import AddRecord from "./AddRecord";
 
 const Background = styled(Box)(p => ({
     height: `100vh`,
+    overflow: `hidden`,
+    display: `flex`,
+    flexDirection: `column`,
+    position: `relative`,
 }));
 
 const Body = styled(Box)(p => ({
