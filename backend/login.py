@@ -1,50 +1,38 @@
 from flask import Flask, jsonify, request, session, Blueprint
-from flask_mysqldb import MySQL
-from app import db
-# from flask_sqlalchemy import SQLAlchemy
+from service.login import Login, SignUp
 
 bp = Blueprint('login', __name__, url_prefix='/')
+login_service = Login()
+signup_service = SignUp()
+
 
 @bp.route('/login', methods=['POST'])
 def login():
-    email = request.form['email']
-    password = request.form['password']
+    email = request.form.get('email')
+    password = request.form.get('password')
     
-    cursor = db.connection.cursor()
-    cursor.execute("SELECT * FROM user  WHERE email= '%s'" %(str(email)))
-    # cursor.execute("SELECT * FROM user")
+    result = login_service.return_service(email, password)
     
-    account = cursor.fetchone()
-    print(account)
-    if account:
-        
-        if password != account['password']:
-            return jsonify({'userId' : -1})
-        
-        session['userId'] = account['iduser']
-        return jsonify({'userId' : account['iduser']})
+    if result['userId'] != -1:
+        session.permanent = True
+        session['userId'] = result['userId']
     
-    else:
-        return jsonify({'userId' : -1})
     
+    return jsonify(result)
     
 @bp.route('/user', methods=['POST'])
 def user():
-    email = request.form['email']
-    password = request.form['password']
-    name = request.form['name']
+    email = request.form.get('email')
+    password = request.form.get('password')
+    name = request.form.get('name')
     
-    cursor = db.connection.cursor()
-    cursor.execute("SELECT * FROM user  WHERE email= '%s'" %(str(email)))
-    # cursor.execute("SELECT * FROM user")
-    account = cursor.fetchone()
+    result = signup_service.return_service(email, password, name)
     
-    cursor.execute("SELECT COUNT(*) FROM user")
-    user_id = cursor.fetchone()['COUNT(*)']
+    return jsonify(result)
+
+
+@bp.route('/logout', methods=['GET'])
+def logout():
+    session.pop('userId', None)
     
-    if account:
-        cursor.execute("INSERT INTO user (iduser, email, password, name) VALUE(%d, %s, %s, %s)" % (user_id, email, password, name))
-        return jsonify({'userId' : account['iduser']})
-    
-    else:
-        return jsonify({'userId' : -1})
+    return jsonify({})
