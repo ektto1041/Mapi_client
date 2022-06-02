@@ -9,7 +9,7 @@ class AllRecordInquiry(Service):
     
     def return_service(self, map_id, user_id, category):
         if not self.check_valid_user(map_id, user_id):
-            return {'recordId' : -1}
+            return [{'recordId' : -1}]
         
         if category != '-':
             records = self.get_specific_category_records(map_id, category)
@@ -35,7 +35,7 @@ class AllRecordInquiry(Service):
         self.cursor.execute("SELECT * FROM map  WHERE idmap= '%s'" %(int(map_id)))
         record = self.cursor.fetchone()
         
-        if int(record['iduser']) != user_id:
+        if int(record['iduser']) != user_id and int(record['share']) == 0:
             return False
         else:
             return True
@@ -58,9 +58,20 @@ class OneRecordInquiry(Service):
     def check_valid_user(self, record_id, user_id):
         self.cursor.execute("SELECT * FROM record  WHERE idrecord= '%s'" %(int(record_id)))
         record = self.cursor.fetchone()
+        map_id = int(record['id_map'])
+        record_user_id = int(record['id_user'])
         
-        if int(record['id_user']) != user_id:
-            return False
+        self.cursor.execute("SELECT * FROM map  WHERE idmap= '%s'" %(int(map_id)))
+        record = self.cursor.fetchone()
+        
+        if int(record['share']) == 0:
+            
+            if record_user_id != user_id :
+                return False
+            
+            return True
+        
+        
         else:
             return True
      
