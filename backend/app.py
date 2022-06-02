@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
-    CORS(app, resources={r'*': {'origins': 'http://localhost:3000'}}, supports_credentials=True)
+    CORS(app)
     app.permanent_session_lifetime = timedelta(minutes=5)
 
     with open('config/sql_setting.yaml') as f:
