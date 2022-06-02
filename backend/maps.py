@@ -11,8 +11,10 @@ map_inquiry_service = MapInquiry()
 def create_map():
     
     if 'userId' in session:
-        name = request.form.get('name')
-        share = request.form.get('share')
+        request_data = request.get_json()
+        
+        name = request_data['name']
+        share = request_data['share']
         
         result = map_create_service.return_service(session['userId'], name, share)
     

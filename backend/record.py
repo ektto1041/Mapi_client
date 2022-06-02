@@ -34,12 +34,14 @@ def all_record_inquiry(map_id, category):
 def create_record():
     if 'userId' in session:
         userId = session['userId']
-        mapId = request.form.get('mapId')
-        title = request.form.get('title')
-        category = request.form.get('category')
-        content = request.form.get('content')
-        latitude = request.form.get('latitude')
-        longitude = request.form.get('longitude')
+        request_data = request.get_json()
+        
+        mapId = request_data['mapId']
+        title = request_data['title']
+        category = request_data['category']
+        content = request_data['content']
+        latitude = request_data['latitude']
+        longitude = request_data['longitude']
         
         print(mapId)
         result = record_create_service.return_service(userId, mapId, title, category, content, latitude, longitude)

@@ -8,8 +8,10 @@ signup_service = SignUp()
 
 @bp.route('/login', methods=['POST'])
 def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
+    request_data = request.get_json()
+    
+    email = request_data['email']
+    password = request_data['password']
     
     result = login_service.return_service(email, password)
     
@@ -22,9 +24,11 @@ def login():
     
 @bp.route('/user', methods=['POST'])
 def user():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    name = request.form.get('name')
+    request_data = request.get_json()
+    
+    email = request_data['email']
+    password = request_data['password']
+    name = request_data['name']
     
     result = signup_service.return_service(email, password, name)
     
