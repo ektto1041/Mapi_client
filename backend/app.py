@@ -1,11 +1,10 @@
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
-from flask_mysqldb import MySQL
 import yaml
 from datetime import timedelta
 # from flask_sqlalchemy import SQLAlchemy
 
-db = MySQL()
+
 
 def create_app():
     app = Flask(__name__)
