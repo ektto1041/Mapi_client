@@ -4,7 +4,7 @@ const path = {
         login: `/login`,
         signUp: '/signUp',
         frame: `/*`,
-        map: `/map/*`,
+        map: `/map/:mapId`,
         mapList: `/mapList/*`,
         post: `/post/:postId`,
         addRecord: `/addRecord`,
@@ -14,10 +14,10 @@ const path = {
         login: '/auth/login',
         signUp: '/auth/signup',
         frame: `/`,
-        map: `/map`,
+        map: (mapId) => `/map/${mapId}`,
         mapList: `/mapList`,
         post: (postId) => `/post/${postId}`,
-        addRecord: (lat, lng) => `/addRecord?lat=${lat}&lng=${lng}`,
+        addRecord: (mapId, lat, lng) => `/addRecord?mapId=${mapId}&lat=${lat}&lng=${lng}`,
     }
 }
 

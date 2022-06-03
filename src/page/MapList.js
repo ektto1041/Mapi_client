@@ -11,8 +11,9 @@ import {serverApis} from "../api/Api";
 import Spin from "../component/common/Spin";
 import {dev, dummy} from "../resource/dev";
 import {Cookies, useCookies} from "react-cookie";
-import Button from "@mui/material/Button";
 import NewMapDialog from "../component/common/NewMapDialog";
+import {useNavigate} from "react-router-dom";
+import path from "../resource/Path";
 
 const Background = styled(Box)(p => ({
     width: `100%`,
@@ -23,7 +24,7 @@ const Background = styled(Box)(p => ({
 
 const Content = styled(Box)(p => ({
     width: `100%`,
-    height: `100%`,
+    height: `calc(100% - 50px)`,
 }));
 
 const SwitchBox = styled(Box)(p => ({
@@ -43,14 +44,18 @@ const SwitchLabel = styled(Typography)(p => ({
 
 const MapItemBox = styled(Box)(p => ({
     width: `100%`,
-    height: `auto`,
+    height: `calc(100% - 50px)`,
     display: `flex`,
     flexDirection: `column`,
+    overflowY: `auto`,
+    overflowX: `hidden`,
 }));
 
 const MapList = () => {
+    const navigate = useNavigate();
+
     const [isLoading, setIsLoading] = useState(false);
-    const [isAll, setIsAll] = useState(false);
+    const [isAll, setIsAll] = useState(true);
     const [maps, setMaps] = useState([]);
     const [newMapDialogOpen, setNewMapDialogOpen] = useState(false);
     const [newMapName, setNewMapName] = useState('');
@@ -86,6 +91,8 @@ const MapList = () => {
                     .then(r => {
                         setMaps(r.data);
 
+                        console.log(r.data);
+
                         setIsLoading(false);
                     })
                     .catch(e => {
@@ -120,9 +127,13 @@ const MapList = () => {
             share: isShare
         }
 
+        console.log(newMapName);
+
         serverApis.addMap(mapDto)
             .then(r => {
                 // TODO: 새 맵 추가 성공 시
+                console.log(r.data);
+                navigate(0);
             })
             .catch(e => console.log(e));
     }, [newMapName, isShare]);
@@ -142,7 +153,7 @@ const MapList = () => {
                                 내 지도만 보기
                             </SwitchLabel>
 
-                            <Switch value={isAll} onChange={onSwitchChange} />
+                            <Switch checked={isAll} onChange={onSwitchChange} />
 
                             <SwitchLabel>
                                 공개된 지도 보기
@@ -151,8 +162,7 @@ const MapList = () => {
 
                         <MapItemBox>
                             {maps.map(item => (
-                                <MapItem key={item.id} userName={item.userName} mapName={item.mapName}
-                                         count={item.count}/>
+                                <MapItem key={item.idmap} mapId={item.idmap} userName={item.user_name} mapName={item.map_name}/>
                             ))}
                             <MapItem type='add' onDialogOpen={onDialogOpen} />
                         </MapItemBox>

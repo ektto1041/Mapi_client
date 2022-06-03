@@ -32,6 +32,8 @@ const LoginBox = ({
             name
         };
 
+        console.log(JSON.stringify(userSignUpDto));
+
         if(dev) {
             // Dev: 바로 로그인 페이지로 이동
             navigate(path.full.login);

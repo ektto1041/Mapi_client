@@ -11,7 +11,8 @@ import path from "../../resource/Path";
 
 const Container = styled(Box)(p => ({
     width: `calc(100% - 10px)`,
-    height: `15vh`,
+    height: `18%`,
+    minHeight: `18%`,
     margin: `5px`,
     borderStyle: `solid`,
     borderWidth: `1px`,
@@ -22,16 +23,16 @@ const Container = styled(Box)(p => ({
 
 const MapItem = ({
     type,
+    mapId,
     userName,
     mapName,
-    count,
     onDialogOpen,
 }) => {
     const navigate = useNavigate();
 
     const onClickMapItem = useCallback(() => {
         if(type === 'add') onDialogOpen();
-        else navigate(path.full.map);
+        else navigate(path.full.map(mapId));
     }, [])
 
     return (
@@ -76,13 +77,13 @@ const MapItem = ({
                             {/*>*/}
                             {/*    최종 수정: 2022-04-09*/}
                             {/*</Typography>*/}
-                            <Typography
-                                sx={{
-                                    width: `50%`
-                                }}
-                            >
-                                {count}개의 기록
-                            </Typography>
+                            {/*<Typography*/}
+                            {/*    sx={{*/}
+                            {/*        width: `50%`*/}
+                            {/*    }}*/}
+                            {/*>*/}
+                            {/*    개의 기록*/}
+                            {/*</Typography>*/}
                         </Box>
 
 

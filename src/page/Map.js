@@ -5,8 +5,12 @@ import {CircularProgress} from "@mui/material";
 import Spin from '../component/common/Spin';
 import CategoryBox from "../component/common/CategoryBox";
 import {dev, dummy} from "../resource/dev";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import path from "../resource/Path";
+import {serverApis} from "../api/Api";
+import {Cookies} from "react-cookie";
+import String from "../resource/String";
+import str from "../resource/String";
 
 /**
  *  지도가 보여지는 화면
@@ -21,6 +25,7 @@ const Background = styled(Box)(p => ({
 }));
 
 const Map = () => {
+    const {mapId} = useParams();
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(true);
@@ -54,8 +59,6 @@ const Map = () => {
                     setMap(new kakao.maps.Map(container, options)); //지도 생성 및 객체 리턴
 
                     getPins('-');
-
-                    setIsLoading(false);
                 },
                 e => {
                     console.log(e);
@@ -105,7 +108,7 @@ const Map = () => {
         kakao.maps.event.addListener(map, 'click', onMapClick);
     }, [map]);
 
-    const getPins = (category) => {
+    const getPins = useCallback((category) => {
         if(dev) {
             const pins = category === '-' ? dummy.records : dummy.records.filter(item => item.category === category);
 
@@ -126,15 +129,47 @@ const Map = () => {
             });
 
             setMarkers(markerList);
-        } else {
 
+            setIsLoading(false);
+        } else {
+            serverApis.getAllRecordByMapAndCategory(mapId, category)
+                .then(r => {
+                    console.log(r.data);
+
+                    let tmpMarkers = [];
+
+                    r.data.forEach(pin => {
+                        const pos = new kakao.maps.LatLng(pin.latitude, pin.longitude);
+
+                        console.log(pos);
+
+                        const marker = new kakao.maps.Marker({
+                            position: pos,
+                            clickable: true,
+                            title: pin.idrecord,
+                        });
+
+                        tmpMarkers.push(marker);
+                    });
+
+                    setMarkers(tmpMarkers);
+
+                    setIsLoading(false);
+                })
+                .catch(e => console.log(e));
         }
-    };
+    }, []);
 
     const onMapClick = (e) => {
-        const latLng = e.latLng;
+        serverApis.getAllMapByUser(new Cookies().get("userId"))
+            .then(r => {
+                if(r.data.filter(m => `${m.idmap}` === mapId).length === 1) {
+                    navigate(path.full.addRecord(mapId, latLng.Ma, latLng.La));
+                }
+            })
+            .catch(e => console.log(e));
 
-        navigate(path.full.addRecord(latLng.Ma, latLng.La));
+        const latLng = e.latLng;
     };
 
     const onFilterItemClick = useCallback((item) => {

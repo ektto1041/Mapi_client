@@ -39,7 +39,7 @@ const AddRecord = () => {
 
     const onSubmitClick = useCallback(() => {
         const recordDto = {
-            userId: new Cookies().get('userId'),
+            mapId: searchParams.get('mapId'),
             title: title,
             content: content,
             category: category,
@@ -54,7 +54,7 @@ const AddRecord = () => {
         } else {
             serverApis.addRecord(recordDto)
                 .then(r => {
-                    navigate(path.full.map);
+                    navigate(path.full.map(searchParams.get('mapId')));
                 })
                 .catch(e => console.log(e));
         }

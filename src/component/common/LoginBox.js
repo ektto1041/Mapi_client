@@ -35,7 +35,9 @@ const LoginBox = ({
         } else {
             serverApis.login(userLoginDto)
                 .then(r => {
-                    loginSuccess(r.data);
+                    console.log(r.data);
+
+                    loginSuccess(r.data.userId, r.data.mainMapId)
                 })
                 .catch(e => console.log(e));
         }
@@ -44,11 +46,12 @@ const LoginBox = ({
     /**
      * 로그인 성공 시, 쿠키에 userId 추가하고 지도 페이지로 이동
      * @param userId
+     * @param mainMapId
      */
-    const loginSuccess = (userId) => {
+    const loginSuccess = (userId, mainMapId) => {
         new Cookies().set('userId', userId);
 
-        navigate(path.full.map);
+        navigate(path.full.map(mainMapId));
     };
 
     return (
