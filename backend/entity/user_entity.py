@@ -58,6 +58,7 @@ class UserEntity(Entity):
         
         sql = "UPDATE users SET main_map_id=%s where iduser=%s"
         cls._cursor.execute(sql, (int(main_map_id), int(user_id)))
+        cls._db.commit()
         
         
         return user_id

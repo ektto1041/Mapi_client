@@ -1,6 +1,7 @@
 from service import Service
 import pymysql
 from entity.user_entity import UserEntity
+from entity.map_entity import MapEntity
 
 class Login(Service):
     def __init__(self):
@@ -11,8 +12,9 @@ class Login(Service):
         
         if UserEntity.check_valid_user(email, password):
             user_id = UserEntity.get_user_id(email)
+            main_map_id = MapEntity.get_main_map_id(user_id)
             
-            return {'userId' : user_id}
+            return {'userId' : user_id, 'mainMapId' : main_map_id}
         else:
             return {'userId' : -1}
         
