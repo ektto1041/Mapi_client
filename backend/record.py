@@ -60,9 +60,9 @@ def create_record():
 def del_record(record_id):
     if 'userId' in session:
         user_id = session['userId']
-        record_id = record_del_service.return_service(record_id, user_id)
+        result = record_del_service.return_service(record_id, user_id)
     
-        return jsonify({'recordId' : record_id})
+        return jsonify(result)
     
     
     else:
@@ -83,9 +83,9 @@ def update_record():
         content = request_data['content']
         record_id = request_data['recordId']
         
-        record_id = record_update_service.return_service(record_id, user_id, title, category, content)
+        result = record_update_service.return_service(record_id, user_id, title, category, content)
         
-        return jsonify({'recordId' : record_id})
+        return jsonify(result)
         
     else:
         return jsonify({'recordId' : -1})

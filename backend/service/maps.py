@@ -39,14 +39,14 @@ class MapDelete(Service):
             
             if MapEntity.check_main_map(map_id):
             
-                return -1
+                return {'mapId' : -1}
             else:
                 map_id = MapEntity.del_map(map_id)
                 
-                return map_id
+                return {'mapId' : map_id}
             
         else:
-            return -1
+            return{'mapId' : -1}
     
     
 
@@ -60,12 +60,12 @@ class MapUpdate(Service):
                 
                 map_id = MapEntity.update_map(map_id, name, share)
             
-                return map_id
+                return {'mapId' : map_id}
             
             else:
-                return -1
+                return {'mapId' : -1}
         else:
-                return -1
+                return {'mapId' : -1}
         
         
 

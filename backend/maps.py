@@ -49,9 +49,9 @@ def inquire_map(user_id):
 def del_map(map_id):
     if 'userId' in session:
         user_id = session['userId']
-        map_id = map_del_service.return_service(map_id, user_id)
+        result = map_del_service.return_service(map_id, user_id)
     
-        return jsonify({'mapId' : map_id})
+        return jsonify(result)
     
     
     else:
@@ -68,10 +68,10 @@ def update_map():
         share = request_data['share']
         map_id = request_data['mapId']
         
-        map_id = map_update_service.return_service(map_id, name, share, user_id)
+        result = map_update_service.return_service(map_id, name, share, user_id)
         
     
-        return jsonify({'mapId' : map_id})
+        return jsonify(result)
     
     
     else:

@@ -5,7 +5,7 @@ from pytz import timezone
 from entity.record_entity import RecordEntity
 from entity.map_entity import MapEntity
 
-class AllRecordInquiry(Service):
+class AllRecordInquiry(Service):    
     def __init__(self):
         super().__init__()
     
@@ -59,10 +59,10 @@ class RecordDelete(Service):
         
             record_id = RecordEntity.del_record(record_id)
         
-            return record_id
+            return {'recordId' : record_id}
         
         else:
-            return -1
+            return {'recordId' : -1}
     
     
 class RecordUpdate(Service):
@@ -74,10 +74,11 @@ class RecordUpdate(Service):
         
             result = RecordEntity.update_record(record_id, title, category, content)
             
-            return result
+            
+            return {'recordId' : result}
             
         else:
-            return -1
+            return {'recordId' : -1}
         
         
         
