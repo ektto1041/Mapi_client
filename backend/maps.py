@@ -58,14 +58,15 @@ def del_map(map_id):
         return jsonify({'mapId' : -1})
     
 
-@bp.route('/map/<map_id>', methods=['PUT'])
-def update_map(map_id):
+@bp.route('/map', methods=['PUT'])
+def update_map():
     if 'userId' in session:
         user_id = session['userId']
         request_data = request.get_json()
         
         name = request_data['name']
         share = request_data['share']
+        map_id = request_data['mapId']
         
         map_id = map_update_service.return_service(map_id, name, share, user_id)
         

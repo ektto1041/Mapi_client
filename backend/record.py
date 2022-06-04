@@ -71,8 +71,8 @@ def del_record(record_id):
 
 
 
-@bp.route('/record/<record_id>', methods=['PUT'])
-def update_record(record_id):
+@bp.route('/record', methods=['PUT'])
+def update_record():
     if 'userId' in session:
         user_id = session['userId']
         request_data = request.get_json()
@@ -81,6 +81,7 @@ def update_record(record_id):
         title = request_data['title']
         category = request_data['category']
         content = request_data['content']
+        record_id = request_data['recordId']
         
         record_id = record_update_service.return_service(record_id, user_id, title, category, content)
         
