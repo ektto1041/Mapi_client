@@ -64,15 +64,7 @@ class MapEntity(Entity):
         record = cls._cursor.fetchone()
         
         return record
-    
-    
-    @classmethod
-    def get_main_map_id(cls, user_id):
-        cls._cursor.execute("SELECT main_map_id FROM users WHERE iduser=%s" % (int(user_id)))
-        main_map_id = cls._cursor.fetchone()['main_map_id']
-        
-        return main_map_id
-    
+
     
     @classmethod
     def check_main_map(cls, map_id):
