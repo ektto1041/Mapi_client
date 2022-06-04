@@ -45,6 +45,26 @@ const serverApis = {
             .then(r => resolve(r))
             .catch(e => reject(e))
     }),
+    updateRecord: (recordUpdateDto) => new Promise((resolve, reject) => {
+        axios.put(`${addr}/record`, recordUpdateDto, { withCredentials: true })
+            .then(r => resolve(r))
+            .catch(e => reject(e))
+    }),
+    deleteRecord: (recordId) => new Promise((resolve, reject) => {
+        axios.delete(`${addr}/record/${recordId}`, { withCredentials: true })
+            .then(r => resolve(r))
+            .catch(e => reject(e))
+    }),
+    updateMap: (mapUpdateDto) => new Promise((resolve, reject) => {
+        axios.put(`${addr}/map`, mapUpdateDto, { withCredentials: true })
+            .then(r => resolve(r))
+            .catch(e => reject(e))
+    }),
+    deleteMap: (mapId) => new Promise((resolve, reject) => {
+        axios.delete(`${addr}/map/${mapId}`, { withCredentials: true })
+            .then(r => resolve(r))
+            .catch(e => reject(e))
+    }),
 }
 
 export {
