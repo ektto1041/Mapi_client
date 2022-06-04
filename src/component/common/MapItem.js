@@ -4,10 +4,11 @@
 import {styled} from "@mui/system";
 import Box from "@mui/material/Box";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import {Typography} from "@mui/material";
+import {IconButton, Menu, MenuItem, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import path from "../../resource/Path";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Container = styled(Box)(p => ({
     width: `calc(100% - 10px)`,
@@ -26,14 +27,40 @@ const MapItem = ({
     mapId,
     userName,
     mapName,
+    share,
     onDialogOpen,
+    onUpdateClick,
+    onDeleteClick,
 }) => {
     const navigate = useNavigate();
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const onMoreClick = e => {
+        setAnchorEl(e.currentTarget);
+    };
+
+    const onMoreClose = () => {
+        setAnchorEl(null);
+    };
 
     const onClickMapItem = useCallback(() => {
         if(type === 'add') onDialogOpen();
         else navigate(path.full.map(mapId));
     }, [])
+
+    const handleUpdateClick = () => {
+        onUpdateClick({
+            mapId,
+            mapName,
+            share,
+        });
+    }
+
+    const handleDeleteClick = () => {
+        onDeleteClick(mapId);
+    }
 
     return (
         <Container>
@@ -48,7 +75,7 @@ const MapItem = ({
                     <Box
                         onClick={onClickMapItem}
                         sx={{
-                            width: `90%`,
+                            width: `80%`,
                             display: `flex`,
                             flexDirection: `column`,
                             justifyContent: `center`,
@@ -93,10 +120,37 @@ const MapItem = ({
                         display: `flex`,
                         flexDirection: 'row',
                         alignItems: `center`,
-                        mr: `10px`,
                     }}>
                         <FavoriteBorderIcon color='primary' sx={{ width: `100%`, height: `100%`, maxHeight: `30px` }} />
                     </Box>
+                    <Box sx={{
+                        width: `10%`,
+                        display: `flex`,
+                        flexDirection: 'row',
+                        alignItems: `center`,
+                        mr: `10px`,
+                    }}>
+                        <IconButton
+                            sx={{
+                                width: `100%`,
+                                height: `100%`,
+                                maxHeight: `30px`,
+                            }}
+                            onClick={onMoreClick}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={onMoreClose} >
+                            <MenuItem onClick={handleUpdateClick}>수정</MenuItem>
+                            <MenuItem onClick={handleDeleteClick}>삭제</MenuItem>
+                        </Menu>
+
+                    </Box>
+
+
                 </>
             )}
         </Container>

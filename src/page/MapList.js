@@ -14,6 +14,7 @@ import {Cookies, useCookies} from "react-cookie";
 import NewMapDialog from "../component/common/NewMapDialog";
 import {useNavigate} from "react-router-dom";
 import path from "../resource/Path";
+import UpdateMapDialog from "../component/common/UpdateMapDialog";
 
 const Background = styled(Box)(p => ({
     width: `100%`,
@@ -61,6 +62,9 @@ const MapList = () => {
     const [newMapName, setNewMapName] = useState('');
     const [isShare, setIsShare] = useState(false);
 
+    const [updateModalOpen, setUpdateModalOpen] = useState(false);
+    const [currentMap, setCurrentMap] = useState(null);
+
     const onShareChange = (e) => {
         setIsShare(e.target.checked);
     };
@@ -77,6 +81,8 @@ const MapList = () => {
             if(isAll) {
                 serverApis.getAllMap()
                     .then(r => {
+                        console.log(r.data);
+
                         setMaps(r.data);
 
                         setIsLoading(false);
@@ -138,6 +144,23 @@ const MapList = () => {
             .catch(e => console.log(e));
     }, [newMapName, isShare]);
 
+    const onUpdateModalClose = () => {
+        setUpdateModalOpen(false);
+    }
+
+    const onUpdateClick = (item) => {
+        console.log(item);
+        setCurrentMap(item);
+        setUpdateModalOpen(true);
+    }
+
+    const onDeleteClick = (mapId) => {
+        serverApis.deleteMap(mapId)
+            .then(r => {
+                navigate(0);
+            })
+            .catch(e => console.log(e));
+    }
 
     return (
         <Background>
@@ -152,9 +175,7 @@ const MapList = () => {
                             <SwitchLabel>
                                 내 지도만 보기
                             </SwitchLabel>
-
                             <Switch checked={isAll} onChange={onSwitchChange} />
-
                             <SwitchLabel>
                                 공개된 지도 보기
                             </SwitchLabel>
@@ -162,7 +183,7 @@ const MapList = () => {
 
                         <MapItemBox>
                             {maps.map(item => (
-                                <MapItem key={item.idmap} mapId={item.idmap} userName={item.user_name} mapName={item.map_name}/>
+                                <MapItem key={item.idmap} mapId={item.idmap} userName={item.user_name} mapName={item.map_name} share={item.share} onUpdateClick={onUpdateClick} onDeleteClick={onDeleteClick} />
                             ))}
                             <MapItem type='add' onDialogOpen={onDialogOpen} />
                         </MapItemBox>
@@ -171,6 +192,11 @@ const MapList = () => {
                         <Dialog open={newMapDialogOpen} onClose={onDialogClose}>
                             <DialogTitle>새 지도 생성</DialogTitle>
                             <NewMapDialog newMapName={newMapName} isShare={isShare} onNewMapNameChange={onNewMapNameChange} onShareChange={onShareChange} onNewMapClick={onNewMapClick} />
+                        </Dialog>
+                        {/* 업데이트 모달*/}
+                        <Dialog open={updateModalOpen} onClose={onUpdateModalClose}>
+                            <DialogTitle>지도 수정</DialogTitle>
+                            <UpdateMapDialog item={currentMap} />
                         </Dialog>
                     </>
                 )}
