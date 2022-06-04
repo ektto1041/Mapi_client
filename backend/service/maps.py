@@ -27,6 +27,47 @@ class MapCreate(Service):
         map_id = MapEntity.create_map(user_id, map_name, share)
             
         return {'mapId' : map_id}
+    
+    
+class MapDelete(Service):
+    def __init__(self):
+        super().__init__()
+        
+    
+    def return_service(self, map_id, user_id):
+        if MapEntity.check_auth_map(map_id, user_id):
+            
+            if MapEntity.check_main_map(map_id):
+            
+                return -1
+            else:
+                map_id = MapEntity.del_map(map_id)
+                
+                return map_id
+            
+        else:
+            return -1
+    
+    
+
+class MapUpdate(Service):
+    def __init__(self):
+        super().__init__()
+        
+    def return_service(self, map_id, name, share, user_id):
+        if MapEntity.check_auth_map(map_id, user_id):
+            if not MapEntity.check_main_map(map_id):
+                
+                map_id = MapEntity.update_map(map_id, name, share)
+            
+                return map_id
+            
+            else:
+                return -1
+        else:
+                return -1
+        
+        
 
     
         

@@ -72,7 +72,57 @@ class MapEntity(Entity):
         main_map_id = cls._cursor.fetchone()['main_map_id']
         
         return main_map_id
+    
+    
+    @classmethod
+    def check_main_map(cls, map_id):
+        cls._cursor.execute("SELECT main_map_id from users WHERE main_map_id=%s" % (map_id))
+        result = cls._cursor.fetchone()
         
+        if result:
+            return True
+    
+        else:
+            return False
+        
+    
+    @classmethod
+    def del_map(cls, map_id):
+        try:
+            cls._cursor.execute("DELETE FROM maps  WHERE idmap= %s" %(int(map_id)))
+            cls._db.commit()
+            
+            return map_id        
+        except:
+            return -1
+        
+        
+    @classmethod
+    def update_map(cls, map_id, name, share):
+        try:
+            cls._cursor.execute("UPDATE maps SET map_name=\'%s\', share=%s WHERE idmap=%s" % (name, share, map_id))
+            cls._db.commit()
+            
+            return map_id
+        
+        except:
+            return -1
+        
+        
+    @classmethod
+    def check_auth_map(cls, map_id, user_id):
+        try:
+            cls._cursor.execute("SELECT * from maps WHERE idmap=%s and iduser=%s" % (int(map_id), int(user_id)))
+            maps = cls._cursor.fetchone()
+            
+            if maps:
+                return True
+            
+            else:
+                return False
+                
+        except:
+            return False
             
         
         

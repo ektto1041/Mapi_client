@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, session, Blueprint
-from service.record import AllRecordInquiry, OneRecordInquiry, RecordCreate
+from service.record import RecordUpdate
+from service.record import AllRecordInquiry, OneRecordInquiry, RecordCreate, RecordDelete
 
 
 bp = Blueprint('record', __name__, url_prefix='/')
@@ -7,6 +8,8 @@ bp = Blueprint('record', __name__, url_prefix='/')
 all_record_inquiry_service = AllRecordInquiry()
 one_record_inquiry_service = OneRecordInquiry()
 record_create_service = RecordCreate()
+record_del_service = RecordDelete()
+record_update_service = RecordUpdate()
 
 @bp.route('/record/<record_id>', methods=['GET'])
 def one_record_inquiry(record_id):
@@ -48,5 +51,40 @@ def create_record():
         
         return jsonify(result)
     
+    else:
+        return jsonify({'recordId' : -1})
+    
+
+
+@bp.route('/record/<record_id>', methods=['DELETE'])
+def del_record(record_id):
+    if 'userId' in session:
+        user_id = session['userId']
+        record_id = record_del_service.return_service(record_id, user_id)
+    
+        return jsonify({'recordId' : record_id})
+    
+    
+    else:
+        return jsonify({'recordId' : -1})
+
+
+
+
+@bp.route('/record/<record_id>', methods=['PUT'])
+def update_record(record_id):
+    if 'userId' in session:
+        user_id = session['userId']
+        request_data = request.get_json()
+        
+        
+        title = request_data['title']
+        category = request_data['category']
+        content = request_data['content']
+        
+        record_id = record_update_service.return_service(record_id, user_id, title, category, content)
+        
+        return jsonify({'recordId' : record_id})
+        
     else:
         return jsonify({'recordId' : -1})

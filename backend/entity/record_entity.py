@@ -1,3 +1,5 @@
+from calendar import c
+from regex import R
 from entity import Entity
 from datetime import datetime
 from pytz import timezone
@@ -73,5 +75,47 @@ class RecordEntity(Entity):
         
         return records
         
+
+    
+    @classmethod
+    def del_record(cls, record_id):
+        try:
+            cls._cursor.execute("DELETE FROM records  WHERE idrecord= %s" %(int(record_id)))
+            cls._db.commit()
+            
+            return record_id        
+        except:
+            return -1
+        
+    @classmethod
+    def update_record(cls, record_id, title, category, content):
+        try:
+            cls._cursor.execute("UPDATE records SET title=\'%s\', category=\'%s\', content=\'%s\' WHERE idrecord=%s" % (title, category, content, record_id))
+            cls._db.commit()
+            
+            return record_id
+        
+        except:
+            return -1
+        
+        
+    @classmethod
+    def check_auth_record(cls, record_id, user_id):
+        try:
+            cls._cursor.execute("SELECT * from records WHERE idrecord=%s and id_user=%s" % (int(record_id), int(user_id)))
+            record = cls._cursor.fetchone()
+            
+            if record:
+                return True
+            
+            else:
+                return False
+                
+        except:
+            return False            
+            
+            
+        
+            
         
         

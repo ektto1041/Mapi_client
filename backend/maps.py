@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request, session, Blueprint
 from itsdangerous import json
-from service.maps import MapCreate, MapInquiry
+from service.maps import MapCreate, MapInquiry, MapDelete, MapUpdate
 
 bp = Blueprint('maps', __name__, url_prefix='/')
 map_create_service = MapCreate()
 map_inquiry_service = MapInquiry()
+map_del_service = MapDelete()
+map_update_service = MapUpdate()
 
 
 @bp.route('/map', methods=['POST'])
@@ -41,3 +43,36 @@ def inquire_map(user_id):
     else:
         
         return jsonify({'mapId' : -1})
+    
+
+@bp.route('/map/<map_id>', methods=['DELETE'])
+def del_map(map_id):
+    if 'userId' in session:
+        user_id = session['userId']
+        map_id = map_del_service.return_service(map_id, user_id)
+    
+        return jsonify({'mapId' : map_id})
+    
+    
+    else:
+        return jsonify({'mapId' : -1})
+    
+
+@bp.route('/map/<map_id>', methods=['PUT'])
+def update_map(map_id):
+    if 'userId' in session:
+        user_id = session['userId']
+        request_data = request.get_json()
+        
+        name = request_data['name']
+        share = request_data['share']
+        
+        map_id = map_update_service.return_service(map_id, name, share, user_id)
+        
+    
+        return jsonify({'mapId' : map_id})
+    
+    
+    else:
+        return jsonify({'mapId' : -1})
+    

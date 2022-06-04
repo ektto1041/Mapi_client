@@ -48,6 +48,39 @@ class RecordCreate(Service):
         except:
             return {'recordId' : -1}
         
+        
+class RecordDelete(Service):
+    def __init__(self):
+        super().__init__()
+        
+        
+    def return_service(self, record_id, user_id):
+        if RecordEntity.check_auth_record(record_id, user_id):
+        
+            record_id = RecordEntity.del_record(record_id)
+        
+            return record_id
+        
+        else:
+            return -1
+    
+    
+class RecordUpdate(Service):
+    def __init__(self):
+        super().__init__()
+        
+    def return_service(self, record_id, user_id, title, category, content):
+        if RecordEntity.check_auth_record(record_id, user_id):
+        
+            result = RecordEntity.update_record(record_id, title, category, content)
+            
+            return result
+            
+        else:
+            return -1
+        
+        
+        
               
     
         
