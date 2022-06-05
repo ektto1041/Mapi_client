@@ -42,7 +42,7 @@ const AddRecord = () => {
                 .then(r => {
                     const record = r.data;
 
-                    setMapId(record.mapId);
+                    setMapId(record.id_map);
                     setTitle(record.title);
                     setContent(record.content);
                     setCategory(record.category);
@@ -72,7 +72,7 @@ const AddRecord = () => {
                 category,
             }
 
-            if(!dev) {
+            if(dev) {
                 console.log(recordUpdateDto);
             } else {
                 serverApis.updateRecord(recordUpdateDto)

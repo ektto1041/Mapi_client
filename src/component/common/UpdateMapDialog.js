@@ -26,7 +26,7 @@ const UpdateMapDialog = ({ item: { mapName, mapId, share }}) => {
     const onUpdateClick = () => {
         const mapUpdateDto = {
             mapId,
-            mapName: mapNameInput,
+            name: mapNameInput,
             share: isShare,
         };
 
